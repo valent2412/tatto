@@ -1,0 +1,1165 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Tattobyhunt | Premium Tattoo Studio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* --- CSS VARIABLES --- */
+        :root {
+            --bg-dark: #050505;
+            --bg-secondary: #0d0d0d;
+            --gold: #d4af37;
+            --gold-light: #f3e5ab;
+            --gold-hover: #b5952f;
+            --text-light: #eaeaea;
+            --text-muted: #888;
+            --font-heading: 'Cinzel', serif;
+            --font-body: 'Montserrat', sans-serif;
+        }
+
+        /* --- RESET & GLOBAL --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html { 
+            scroll-behavior: smooth; 
+            -webkit-text-size-adjust: 100%; 
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            overflow-x: hidden;
+            line-height: 1.6;
+            position: relative;
+            width: 100%;
+        }
+
+        a { text-decoration: none; color: inherit; }
+
+        /* --- ANIMASI --- */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes shimmerReverse {
+            0% { background-position: 200% center; }
+            100% { background-position: -200% center; }
+        }
+
+        /* --- NAVBAR & MENU --- */
+        nav {
+            position: fixed; top: 0; width: 100%; padding: 12px 20px;
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(5, 5, 5, 0.98); 
+            z-index: 1000; border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+            transition: all 0.4s ease; height: 70px;
+        }
+
+        .logo-container { display: flex; align-items: center; gap: 10px; z-index: 1001; }
+        
+        .logo-img {
+            height: 40px; width: auto; object-fit: contain;
+            border-radius: 4px; border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .logo-text {
+            font-family: var(--font-heading); font-size: 18px;
+            font-weight: 700; color: var(--gold); letter-spacing: 1px;
+        }
+
+        #menu-toggle { display: none; }
+
+        .hamburger {
+            display: flex; flex-direction: column; justify-content: space-between;
+            width: 30px; height: 20px; cursor: pointer; z-index: 1001; padding: 2px 0;
+        }
+
+        .hamburger span {
+            display: block; width: 100%; height: 2px;
+            background-color: var(--gold); transition: all 0.4s ease; border-radius: 2px;
+        }
+
+        #menu-toggle:checked ~ .hamburger span:nth-child(1) { transform: translateY(9px) rotate(45deg); }
+        #menu-toggle:checked ~ .hamburger span:nth-child(2) { opacity: 0; }
+        #menu-toggle:checked ~ .hamburger span:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
+
+        .nav-menu {
+            position: fixed; top: 0; right: -100%; width: 100%; height: 100vh;
+            background: #050505; 
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            gap: 20px; transition: right 0.5s cubic-bezier(0.77, 0, 0.175, 1); z-index: 1000; padding: 20px;
+        }
+
+        #menu-toggle:checked ~ .nav-menu { right: 0; }
+
+        .nav-menu a, .dropdown-btn {
+            font-family: var(--font-heading); font-size: 1.5rem;
+            text-transform: uppercase; letter-spacing: 2px; color: var(--text-light);
+            transition: color 0.3s; position: relative; background: none; border: none;
+            cursor: pointer; text-align: center;
+        }
+
+        .nav-menu a:hover, .dropdown-btn:hover { color: var(--gold); }
+
+        .dropdown-container { display: flex; flex-direction: column; align-items: center; }
+
+        .dropdown-content {
+            display: none; flex-direction: column; align-items: center; gap: 15px;
+            margin-top: 15px; padding: 15px; background: rgba(212, 175, 55, 0.05);
+            border: 1px solid rgba(212, 175, 55, 0.2); border-radius: 8px; animation: fadeInUp 0.3s ease;
+        }
+
+        .dropdown-container:hover .dropdown-content { display: flex; }
+        .dropdown-content a { font-size: 1.1rem; letter-spacing: 1px; color: var(--gold-light); }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            height: 100vh; min-height: 600px; background-image: url('background.jpg');
+            background-size: cover; background-position: center; display: flex;
+            align-items: center; justify-content: center; text-align: center;
+            position: relative; padding: 80px 15px 20px; 
+        }
+
+        .hero::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(circle, rgba(0,0,0,0.4) 0%, rgba(5,5,5,1) 90%); z-index: 1;
+        }
+
+        .hero-content {
+            position: relative; z-index: 2; width: 100%; max-width: 100%;
+            display: flex; flex-direction: column; align-items: center; animation: fadeInUp 1s ease;
+        }
+
+        .hero-content h1 {
+            font-family: var(--font-heading); font-size: clamp(1.8rem, 10vw, 6rem); 
+            margin-bottom: 10px; letter-spacing: 2px; line-height: 1.2; white-space: nowrap; 
+            background: linear-gradient(90deg, #b5952f 0%, #d4af37 25%, #fff8d6 50%, #d4af37 75%, #b5952f 100%);
+            background-size: 200% auto; color: transparent; -webkit-background-clip: text;
+            background-clip: text; animation: shimmerReverse 4s linear infinite;
+            filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.3));
+        }
+
+        .hero-content p {
+            font-size: clamp(0.6rem, 3vw, 1rem); letter-spacing: 2px; text-transform: uppercase;
+            color: var(--text-light); margin-bottom: 30px; font-weight: 400;
+        }
+
+        .gold-divider {
+            width: 60px; height: 2px; background: var(--gold); margin: 0 auto 30px; box-shadow: 0 0 10px var(--gold);
+        }
+
+        .btn-gold {
+            display: inline-block; padding: 14px 35px; background-color: transparent;
+            color: var(--gold); border: 1px solid var(--gold); font-size: 12px;
+            text-transform: uppercase; letter-spacing: 2px; font-weight: 600;
+            transition: all 0.4s ease; cursor: pointer; position: relative; overflow: hidden; border-radius: 2px;
+        }
+
+        .btn-gold::before {
+            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+            background: var(--gold); transition: left 0.4s ease; z-index: -1;
+        }
+
+        .btn-gold:hover { color: var(--bg-dark); box-shadow: 0 0 20px rgba(212, 175, 55, 0.6); }
+        .btn-gold:hover::before { left: 0; }
+
+        /* --- SECTION TITLES --- */
+        .section-title {
+            text-align: center; font-family: var(--font-heading); font-size: 2.2rem;
+            color: var(--gold); margin-bottom: 10px; letter-spacing: 2px;
+        }
+
+        .location-badge {
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            color: var(--gold-light); font-size: 0.75rem; letter-spacing: 1px;
+            text-transform: uppercase; margin-bottom: 15px; background: rgba(212, 175, 55, 0.1);
+            padding: 8px 15px; border-radius: 20px; border: 1px solid rgba(212, 175, 55, 0.3);
+            width: fit-content; margin-left: auto; margin-right: auto; text-align: center;
+        }
+
+        .location-badge svg { width: 14px; height: 14px; fill: var(--gold); }
+
+        .section-subtitle {
+            text-align: center; color: var(--text-muted); font-size: 0.8rem;
+            letter-spacing: 1px; text-transform: uppercase; margin-bottom: 40px; padding: 0 20px;
+        }
+
+        /* --- KATALOG SECTION --- */
+        #katalog { 
+            padding: 80px 15px 120px; 
+            background-color: var(--bg-secondary); 
+        }
+
+        .grid-container {
+            display: grid; 
+            grid-template-columns: 1fr; 
+            /* Jarak antar katalog tetap lebar */
+            gap: 60px; 
+            max-width: 1300px; 
+            margin: 0 auto;
+        }
+
+        .card {
+            background: var(--bg-dark); 
+            border: 2px solid rgba(212, 175, 55, 0.15);
+            overflow: hidden; transition: all 0.4s ease; cursor: pointer;
+            position: relative; box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            border-radius: 8px;
+            animation: fadeInUp 0.6s ease forwards; opacity: 0;
+        }
+
+        .card:nth-child(1) { animation-delay: 0.1s; }
+        .card:nth-child(2) { animation-delay: 0.15s; }
+        .card:nth-child(3) { animation-delay: 0.2s; }
+        .card:nth-child(4) { animation-delay: 0.25s; }
+        .card:nth-child(5) { animation-delay: 0.3s; }
+        .card:nth-child(6) { animation-delay: 0.35s; }
+        .card:nth-child(7) { animation-delay: 0.4s; }
+        .card:nth-child(8) { animation-delay: 0.45s; }
+        .card:nth-child(9) { animation-delay: 0.5s; }
+        .card:nth-child(10) { animation-delay: 0.55s; }
+        .card:nth-child(11) { animation-delay: 0.6s; }
+        .card:nth-child(12) { animation-delay: 0.65s; }
+        .card:nth-child(13) { animation-delay: 0.7s; }
+        .card:nth-child(14) { animation-delay: 0.75s; }
+        .card:nth-child(15) { animation-delay: 0.8s; }
+
+        .card:active { transform: scale(0.98); border-color: var(--gold); }
+
+        .card-img-container {
+            width: 100%; height: 350px; overflow: hidden; position: relative;
+        }
+
+        .card img {
+            width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease;
+        }
+
+        .card-info {
+            padding: 20px 15px; /* Padding dikembalikan ke ukuran normal */
+            text-align: center; 
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+            background: #0a0a0a;
+        }
+
+        /* Ukuran font nama katalog dikembalikan */
+        .card-name {
+            font-family: var(--font-heading); font-size: 1.3rem; 
+            margin-bottom: 5px; color: var(--gold-light); letter-spacing: 1px;
+        }
+
+        /* Ukuran font harga dikembalikan */
+        .card-price { 
+            color: var(--gold); 
+            font-weight: 600; 
+            font-size: 1rem; 
+            letter-spacing: 1px; 
+            padding-top: 8px;
+            border-top: 1px dashed rgba(212, 175, 55, 0.2); 
+            display: inline-block;
+            width: 70%;
+        }
+
+        /* --- MODAL DETAIL KATALOG (FIX BUG IPHONE) --- */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #050505; 
+            z-index: 2000; display: none; 
+            overflow-y: auto; 
+            -webkit-overflow-scrolling: touch; 
+            padding: 20px 15px;
+        }
+
+        .modal-overlay:target { display: block; }
+
+        .modal-close {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            cursor: pointer; z-index: 2001;
+        }
+
+        .modal-content {
+            max-width: 1000px; margin: 40px auto; background: var(--bg-secondary);
+            border: 1px solid var(--gold); padding: 25px 20px; position: relative;
+            animation: fadeInUp 0.4s ease; box-shadow: 0 0 50px rgba(212, 175, 55, 0.1);
+            border-radius: 8px; z-index: 2002; 
+        }
+
+        .close-btn {
+            position: absolute; top: 10px; right: 15px; font-size: 35px;
+            color: var(--gold); cursor: pointer; transition: 0.3s;
+            line-height: 1; z-index: 10; text-decoration: none;
+        }
+
+        .modal-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
+
+        .modal-overlay input[type="radio"] { display: none; }
+
+        .main-img-container {
+            width: 100%; height: 300px; position: relative;
+            border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 4px;
+            overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .main-img-container .img-display {
+            display: none; width: 100%; height: 100%; object-fit: cover;
+        }
+
+        /* --- LOGIKA GANTI GAMBAR UTAMA (CSS MURNI) UNTUK 15 KATALOG --- */
+        #k1-img1:checked ~ .modal-content .modal-grid .main-img-container .img1,
+        #k1-img2:checked ~ .modal-content .modal-grid .main-img-container .img2,
+        #k1-img3:checked ~ .modal-content .modal-grid .main-img-container .img3,
+        #k2-img1:checked ~ .modal-content .modal-grid .main-img-container .img1,
+        #k2-img2:checked ~ .modal-content .modal-grid .main-img-container .img2,
+        #k2-img3:checked ~ .modal-content .modal-grid .main-img-container .img3,
+        #k3-img1:checked ~ .modal-content .modal-grid .main-img-container .img1,
+        #k3-img2:checked ~ .modal-content .modal-grid .main-img-container .img2,
+        #k3-img3:checked ~ .modal-content .modal-grid .main-img-container .img3,
+        #k4-img1:checked ~ .modal-content .modal-grid .main-img-container .img1,
+        #k4-img2:checked ~ .modal-content .modal-grid .main-img-container .img2,
+        #k4-img3:checked ~ .modal-content .modal-grid .main-img-container .img3,
+        #k5-img1:checked ~ .modal-content .modal-grid .main-img-container .img1,
+        #k5-img2:checked ~ .modal-content .modal-grid .main-img-container .img2,
+        #k5-img3:checked ~ .modal-content .modal-grid .main-img-container .img3,
+        #k6-img1:checked ~ .modal-content .modal-grid .main-img-container .img1,
+        #k6-img2:checked ~ .modal-content .modal-grid .main-img-container .img2,
+        #k6-img3:checked ~ .modal-content .modal-grid .main-img-container .img3,
+        #k7-img1:checked ~ .modal-content .modal-grid .main-img-container .img1,
+        #k7-img2:checked ~ .modal-content .modal-grid .main-img-container .img2,
+        #k7-img3:checked ~ .modal-content .modal-grid .main-img-container .img3,
+        #k8-img1:checked ~ .modal-content .modal-grid .main-img-container .img1,
+        #k8-img2:checked ~ .modal-content .modal-grid .main-img-container .img2,
+        #k8-img3:checked ~ .modal-content .modal-grid .main-img-container .img3,
+        #k9-img1:checked ~ .modal-content .modal-grid .main-img-container .img1,
+        #k9-img2:checked ~ .modal-content .modal-grid .main-img-container .img2,
+        #k9-img3:checked ~ .modal-content .modal-grid .main-img-container .img3,
+        #k10-img1:checked ~ .modal-content .modal-grid .main-img-container .img1,
+        #k10-img2:checked ~ .modal-content .modal-grid .main-img-container .img2,
+        #k10-img3:checked ~ .modal-content .modal-grid .main-img-container .img3,
+        #k11-img1:checked ~ .modal-content .modal-grid .main-img-container .img1,
+        #k11-img2:checked ~ .modal-content .modal-grid .main-img-container .img2,
+        #k11-img3:checked ~ .modal-content .modal-grid .main-img-container .img3,
+        #k12-img1:checked ~ .modal-content .modal-grid .main-img-container .img1,
+        #k12-img2:checked ~ .modal-content .modal-grid .main-img-container .img2,
+        #k12-img3:checked ~ .modal-content .modal-grid .main-img-container .img3,
+        #k13-img1:checked ~ .modal-content .modal-grid .main-img-container .img1,
+        #k13-img2:checked ~ .modal-content .modal-grid .main-img-container .img2,
+        #k13-img3:checked ~ .modal-content .modal-grid .main-img-container .img3,
+        #k14-img1:checked ~ .modal-content .modal-grid .main-img-container .img1,
+        #k14-img2:checked ~ .modal-content .modal-grid .main-img-container .img2,
+        #k14-img3:checked ~ .modal-content .modal-grid .main-img-container .img3,
+        #k15-img1:checked ~ .modal-content .modal-grid .main-img-container .img1,
+        #k15-img2:checked ~ .modal-content .modal-grid .main-img-container .img2,
+        #k15-img3:checked ~ .modal-content .modal-grid .main-img-container .img3 {
+            display: block;
+        }
+
+        .modal-details h2 {
+            font-family: var(--font-heading); font-size: 1.8rem;
+            color: var(--gold); margin-bottom: 10px; letter-spacing: 1px;
+        }
+
+        .modal-price {
+            font-size: 1.3rem; color: var(--gold-light); font-weight: 600;
+            margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .modal-details p {
+            color: var(--text-muted); margin-bottom: 25px; font-size: 0.85rem; line-height: 1.6;
+        }
+
+        .other-photos {
+            margin-top: 30px; border-top: 1px solid rgba(212, 175, 55, 0.2); padding-top: 20px;
+        }
+
+        .other-photos h3 {
+            font-family: var(--font-heading); font-size: 1.1rem;
+            color: var(--gold); margin-bottom: 15px; letter-spacing: 1px;
+        }
+
+        .other-photos-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
+        }
+
+        .other-photos-grid label {
+            display: block; width: 100%; height: 90px; cursor: pointer;
+            border: 2px solid transparent; border-radius: 4px;
+            overflow: hidden; transition: 0.4s;
+        }
+
+        .other-photos-grid label:active {
+            border-color: var(--gold); transform: scale(0.95);
+        }
+
+        .other-photos-grid img {
+            width: 100%; height: 100%; object-fit: cover; pointer-events: none;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            background: #000; padding: 30px 15px; text-align: center;
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .copyright { color: var(--text-muted); font-size: 0.75rem; letter-spacing: 1px; }
+
+        /* --- WHATSAPP FLOATING BUTTON --- */
+        .wa-float {
+            position: fixed; width: 55px; height: 55px; bottom: 20px; right: 20px;
+            background-color: #25d366; color: #FFF; border-radius: 50%;
+            text-align: center; font-size: 30px; box-shadow: 0 4px 20px rgba(37, 211, 102, 0.5);
+            z-index: 1000; display: flex; align-items: center; justify-content: center;
+            transition: all 0.4s ease; animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+        }
+
+        /* --- MEDIA QUERIES --- */
+        @media (min-width: 600px) {
+            .grid-container { 
+                grid-template-columns: repeat(2, 1fr); 
+                gap: 70px; 
+            }
+            .location-badge { font-size: 0.85rem; }
+            .modal-grid { grid-template-columns: 1fr 1fr; }
+            .main-img-container { height: 400px; }
+            .other-photos-grid label { height: 120px; }
+        }
+
+        @media (min-width: 900px) {
+            nav { padding: 15px 50px; height: auto; }
+            .logo-text { font-size: 24px; }
+            .grid-container { grid-template-columns: repeat(3, 1fr); }
+            .main-img-container { height: 500px; }
+            .modal-content { padding: 50px; }
+            .other-photos-grid label { height: 150px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav>
+        <div class="logo-container">
+            <img src="logo.jpg" alt="Logo Tattobyhunt" class="logo-img" onerror="this.style.display='none'">
+            <div class="logo-text">TATTOBYHUNT</div>
+        </div>
+        
+        <input type="checkbox" id="menu-toggle">
+        <label for="menu-toggle" class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </label>
+
+        <div class="nav-menu">
+            <a href="#beranda" onclick="document.getElementById('menu-toggle').checked = false;">Beranda</a>
+            <a href="#katalog" onclick="document.getElementById('menu-toggle').checked = false;">Katalog</a>
+            
+            <div class="dropdown-container">
+                <button class="dropdown-btn">Media Sosial ▾</button>
+                <div class="dropdown-content">
+                    <a href="https://instagram.com/huntsector" target="_blank">Instagram @huntsector</a>
+                    <a href="https://wa.me/628987889860?text=Halo%20Tattobyhunt,%20saya%20ingin%20konsultasi%20mengenai%20tattoo." target="_blank">WhatsApp Official</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section id="beranda" class="hero">
+        <div class="hero-content">
+            <h1>TATTOBYHUNT</h1>
+            <p>Premium Custom Tattoo & Art</p>
+            <div class="gold-divider"></div>
+            <a href="#katalog" class="btn-gold">Lihat Katalog</a>
+        </div>
+    </section>
+
+    <!-- KATALOG SECTION -->
+    <section id="katalog">
+        <div class="location-badge">
+            <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+            Bandung, Jatinangor & Home Service
+        </div>
+
+        <h2 class="section-title">Masterpieces</h2>
+        <p class="section-subtitle">Ketuk untuk melihat detail & angle lainnya</p>
+        
+        <div class="grid-container">
+            
+            <!-- KATALOG 1 -->
+            <a href="#katalog1" class="card">
+                <div class="card-img-container">
+                    <img src="katalog 1/utama.jpg" alt="Model Realism Skull" onerror="this.src='https://via.placeholder.com/400x400?text=Foto+Tidak+Ditemukan'">
+                </div>
+                <div class="card-info">
+                    <div class="card-name">Model Realism Skull</div>
+                    <div class="card-price">Rp 1.500.000</div>
+                </div>
+            </a>
+
+            <!-- KATALOG 2 -->
+            <a href="#katalog2" class="card">
+                <div class="card-img-container">
+                    <img src="katalog 2/utama.jpg" alt="Model Geometric Wolf" onerror="this.src='https://via.placeholder.com/400x400?text=Foto+Tidak+Ditemukan'">
+                </div>
+                <div class="card-info">
+                    <div class="card-name">Model Geometric Wolf</div>
+                    <div class="card-price">Rp 2.000.000</div>
+                </div>
+            </a>
+
+            <!-- KATALOG 3 -->
+            <a href="#katalog3" class="card">
+                <div class="card-img-container">
+                    <img src="katalog 3/utama.jpg" alt="Model Japanese Dragon" onerror="this.src='https://via.placeholder.com/400x400?text=Foto+Tidak+Ditemukan'">
+                </div>
+                <div class="card-info">
+                    <div class="card-name">Model Japanese Dragon</div>
+                    <div class="card-price">Rp 3.500.000</div>
+                </div>
+            </a>
+
+            <!-- KATALOG 4 -->
+            <a href="#katalog4" class="card">
+                <div class="card-img-container">
+                    <img src="katalog 4/utama.jpg" alt="Model Minimalist Rose" onerror="this.src='https://via.placeholder.com/400x400?text=Foto+Tidak+Ditemukan'">
+                </div>
+                <div class="card-info">
+                    <div class="card-name">Model Minimalist Rose</div>
+                    <div class="card-price">Rp 800.000</div>
+                </div>
+            </a>
+
+            <!-- KATALOG 5 -->
+            <a href="#katalog5" class="card">
+                <div class="card-img-container">
+                    <img src="katalog 5/utama.jpg" alt="Model Biomechanical" onerror="this.src='https://via.placeholder.com/400x400?text=Foto+Tidak+Ditemukan'">
+                </div>
+                <div class="card-info">
+                    <div class="card-name">Model Biomechanical</div>
+                    <div class="card-price">Rp 2.800.000</div>
+                </div>
+            </a>
+
+            <!-- KATALOG 6 -->
+            <a href="#katalog6" class="card">
+                <div class="card-img-container">
+                    <img src="katalog 6/utama.jpg" alt="Model Blackwork Mandala" onerror="this.src='https://via.placeholder.com/400x400?text=Foto+Tidak+Ditemukan'">
+                </div>
+                <div class="card-info">
+                    <div class="card-name">Model Blackwork Mandala</div>
+                    <div class="card-price">Rp 1.800.000</div>
+                </div>
+            </a>
+
+            <!-- KATALOG 7 -->
+            <a href="#katalog7" class="card">
+                <div class="card-img-container">
+                    <img src="katalog 7/utama.jpg" alt="Model Old School Swallow" onerror="this.src='https://via.placeholder.com/400x400?text=Foto+Tidak+Ditemukan'">
+                </div>
+                <div class="card-info">
+                    <div class="card-name">Model Old School Swallow</div>
+                    <div class="card-price">Rp 1.200.000</div>
+                </div>
+            </a>
+
+            <!-- KATALOG 8 -->
+            <a href="#katalog8" class="card">
+                <div class="card-img-container">
+                    <img src="katalog 8/utama.jpg" alt="Model Script Lettering" onerror="this.src='https://via.placeholder.com/400x400?text=Foto+Tidak+Ditemukan'">
+                </div>
+                <div class="card-info">
+                    <div class="card-name">Model Script Lettering</div>
+                    <div class="card-price">Rp 500.000</div>
+                </div>
+            </a>
+
+            <!-- KATALOG 9 -->
+            <a href="#katalog9" class="card">
+                <div class="card-img-container">
+                    <img src="katalog 9/utama.jpg" alt="Model Neo-Traditional Tiger" onerror="this.src='https://via.placeholder.com/400x400?text=Foto+Tidak+Ditemukan'">
+                </div>
+                <div class="card-info">
+                    <div class="card-name">Model Neo-Traditional Tiger</div>
+                    <div class="card-price">Rp 2.500.000</div>
+                </div>
+            </a>
+
+            <!-- KATALOG 10 -->
+            <a href="#katalog10" class="card">
+                <div class="card-img-container">
+                    <img src="katalog 10/utama.jpg" alt="Model Fine Line Floral" onerror="this.src='https://via.placeholder.com/400x400?text=Foto+Tidak+Ditemukan'">
+                </div>
+                <div class="card-info">
+                    <div class="card-name">Model Fine Line Floral</div>
+                    <div class="card-price">Rp 1.000.000</div>
+                </div>
+            </a>
+
+            <!-- KATALOG 11 -->
+            <a href="#katalog11" class="card">
+                <div class="card-img-container">
+                    <img src="katalog 11/utama.jpg" alt="Model Chicano Style" onerror="this.src='https://via.placeholder.com/400x400?text=Foto+Tidak+Ditemukan'">
+                </div>
+                <div class="card-info">
+                    <div class="card-name">Model Chicano Style</div>
+                    <div class="card-price">Rp 2.200.000</div>
+                </div>
+            </a>
+
+            <!-- KATALOG 12 -->
+            <a href="#katalog12" class="card">
+                <div class="card-img-container">
+                    <img src="katalog 12/utama.jpg" alt="Model Surrealism Eye" onerror="this.src='https://via.placeholder.com/400x400?text=Foto+Tidak+Ditemukan'">
+                </div>
+                <div class="card-info">
+                    <div class="card-name">Model Surrealism Eye</div>
+                    <div class="card-price">Rp 1.700.000</div>
+                </div>
+            </a>
+
+            <!-- KATALOG 13 -->
+            <a href="#katalog13" class="card">
+                <div class="card-img-container">
+                    <img src="katalog 13/utama.jpg" alt="Model Tribal Polynesian" onerror="this.src='https://via.placeholder.com/400x400?text=Foto+Tidak+Ditemukan'">
+                </div>
+                <div class="card-info">
+                    <div class="card-name">Model Tribal Polynesian</div>
+                    <div class="card-price">Rp 2.000.000</div>
+                </div>
+            </a>
+
+            <!-- KATALOG 14 -->
+            <a href="#katalog14" class="card">
+                <div class="card-img-container">
+                    <img src="katalog 14/utama.jpg" alt="Model Watercolor Splash" onerror="this.src='https://via.placeholder.com/400x400?text=Foto+Tidak+Ditemukan'">
+                </div>
+                <div class="card-info">
+                    <div class="card-name">Model Watercolor Splash</div>
+                    <div class="card-price">Rp 1.900.000</div>
+                </div>
+            </a>
+
+            <!-- KATALOG 15 -->
+            <a href="#katalog15" class="card">
+                <div class="card-img-container">
+                    <img src="katalog 15/utama.jpg" alt="Model Dark Gothic Cross" onerror="this.src='https://via.placeholder.com/400x400?text=Foto+Tidak+Ditemukan'">
+                </div>
+                <div class="card-info">
+                    <div class="card-name">Model Dark Gothic Cross</div>
+                    <div class="card-price">Rp 1.300.000</div>
+                </div>
+            </a>
+
+        </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- MODAL DETAIL KATALOG (15 KATALOG)          -->
+    <!-- ========================================== -->
+
+    <!-- KATALOG 1 MODAL -->
+    <div id="katalog1" class="modal-overlay">
+        <input type="radio" name="k1-img" id="k1-img1" checked>
+        <input type="radio" name="k1-img" id="k1-img2">
+        <input type="radio" name="k1-img" id="k1-img3">
+        <a href="#katalog" class="modal-close"></a> 
+        <div class="modal-content">
+            <a href="#katalog" class="close-btn">&times;</a>
+            <div class="modal-grid">
+                <div class="main-img-container">
+                    <img src="katalog 1/utama.jpg" class="img-display img1" alt="Model Realism Skull">
+                    <img src="katalog 1/1.jpg" class="img-display img2" alt="Angle 1">
+                    <img src="katalog 1/2.jpg" class="img-display img3" alt="Angle 2">
+                </div>
+                <div class="modal-details">
+                    <h2>Model Realism Skull</h2>
+                    <div class="modal-price">Rp 1.500.000</div>
+                    <p>Setiap karya seni di Tattobyhunt dirancang khusus dengan presisi tinggi, menggunakan tinta premium dan standar sterilisasi tertinggi. (Tersedia Home Service area Bandung & Jatinangor).</p>
+                    <a href="https://wa.me/628987889860?text=Halo%20Tattobyhunt,%20saya%20ingin%20pasang%20tatto%20Model%20Realism%20Skull" target="_blank" class="btn-gold" style="display:block; text-align:center;">Pesan via WhatsApp</a>
+                </div>
+            </div>
+            <div class="other-photos">
+                <h3>Detail & Angle Lainnya</h3>
+                <div class="other-photos-grid">
+                    <label for="k1-img1"><img src="katalog 1/utama.jpg"></label>
+                    <label for="k1-img2"><img src="katalog 1/1.jpg"></label>
+                    <label for="k1-img3"><img src="katalog 1/2.jpg"></label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- KATALOG 2 MODAL -->
+    <div id="katalog2" class="modal-overlay">
+        <input type="radio" name="k2-img" id="k2-img1" checked>
+        <input type="radio" name="k2-img" id="k2-img2">
+        <input type="radio" name="k2-img" id="k2-img3">
+        <a href="#katalog" class="modal-close"></a>
+        <div class="modal-content">
+            <a href="#katalog" class="close-btn">&times;</a>
+            <div class="modal-grid">
+                <div class="main-img-container">
+                    <img src="katalog 2/utama.jpg" class="img-display img1" alt="Model Geometric Wolf">
+                    <img src="katalog 2/1.jpg" class="img-display img2" alt="Angle 1">
+                    <img src="katalog 2/2.jpg" class="img-display img3" alt="Angle 2">
+                </div>
+                <div class="modal-details">
+                    <h2>Model Geometric Wolf</h2>
+                    <div class="modal-price">Rp 2.000.000</div>
+                    <p>Setiap karya seni di Tattobyhunt dirancang khusus dengan presisi tinggi, menggunakan tinta premium dan standar sterilisasi tertinggi. (Tersedia Home Service area Bandung & Jatinangor).</p>
+                    <a href="https://wa.me/628987889860?text=Halo%20Tattobyhunt,%20saya%20ingin%20pasang%20tatto%20Model%20Geometric%20Wolf" target="_blank" class="btn-gold" style="display:block; text-align:center;">Pesan via WhatsApp</a>
+                </div>
+            </div>
+            <div class="other-photos">
+                <h3>Detail & Angle Lainnya</h3>
+                <div class="other-photos-grid">
+                    <label for="k2-img1"><img src="katalog 2/utama.jpg"></label>
+                    <label for="k2-img2"><img src="katalog 2/1.jpg"></label>
+                    <label for="k2-img3"><img src="katalog 2/2.jpg"></label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- KATALOG 3 MODAL -->
+    <div id="katalog3" class="modal-overlay">
+        <input type="radio" name="k3-img" id="k3-img1" checked>
+        <input type="radio" name="k3-img" id="k3-img2">
+        <input type="radio" name="k3-img" id="k3-img3">
+        <a href="#katalog" class="modal-close"></a>
+        <div class="modal-content">
+            <a href="#katalog" class="close-btn">&times;</a>
+            <div class="modal-grid">
+                <div class="main-img-container">
+                    <img src="katalog 3/utama.jpg" class="img-display img1" alt="Model Japanese Dragon">
+                    <img src="katalog 3/1.jpg" class="img-display img2" alt="Angle 1">
+                    <img src="katalog 3/2.jpg" class="img-display img3" alt="Angle 2">
+                </div>
+                <div class="modal-details">
+                    <h2>Model Japanese Dragon</h2>
+                    <div class="modal-price">Rp 3.500.000</div>
+                    <p>Setiap karya seni di Tattobyhunt dirancang khusus dengan presisi tinggi, menggunakan tinta premium dan standar sterilisasi tertinggi. (Tersedia Home Service area Bandung & Jatinangor).</p>
+                    <a href="https://wa.me/628987889860?text=Halo%20Tattobyhunt,%20saya%20ingin%20pasang%20tatto%20Model%20Japanese%20Dragon" target="_blank" class="btn-gold" style="display:block; text-align:center;">Pesan via WhatsApp</a>
+                </div>
+            </div>
+            <div class="other-photos">
+                <h3>Detail & Angle Lainnya</h3>
+                <div class="other-photos-grid">
+                    <label for="k3-img1"><img src="katalog 3/utama.jpg"></label>
+                    <label for="k3-img2"><img src="katalog 3/1.jpg"></label>
+                    <label for="k3-img3"><img src="katalog 3/2.jpg"></label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- KATALOG 4 MODAL -->
+    <div id="katalog4" class="modal-overlay">
+        <input type="radio" name="k4-img" id="k4-img1" checked>
+        <input type="radio" name="k4-img" id="k4-img2">
+        <input type="radio" name="k4-img" id="k4-img3">
+        <a href="#katalog" class="modal-close"></a>
+        <div class="modal-content">
+            <a href="#katalog" class="close-btn">&times;</a>
+            <div class="modal-grid">
+                <div class="main-img-container">
+                    <img src="katalog 4/utama.jpg" class="img-display img1" alt="Model Minimalist Rose">
+                    <img src="katalog 4/1.jpg" class="img-display img2" alt="Angle 1">
+                    <img src="katalog 4/2.jpg" class="img-display img3" alt="Angle 2">
+                </div>
+                <div class="modal-details">
+                    <h2>Model Minimalist Rose</h2>
+                    <div class="modal-price">Rp 800.000</div>
+                    <p>Setiap karya seni di Tattobyhunt dirancang khusus dengan presisi tinggi, menggunakan tinta premium dan standar sterilisasi tertinggi. (Tersedia Home Service area Bandung & Jatinangor).</p>
+                    <a href="https://wa.me/628987889860?text=Halo%20Tattobyhunt,%20saya%20ingin%20pasang%20tatto%20Model%20Minimalist%20Rose" target="_blank" class="btn-gold" style="display:block; text-align:center;">Pesan via WhatsApp</a>
+                </div>
+            </div>
+            <div class="other-photos">
+                <h3>Detail & Angle Lainnya</h3>
+                <div class="other-photos-grid">
+                    <label for="k4-img1"><img src="katalog 4/utama.jpg"></label>
+                    <label for="k4-img2"><img src="katalog 4/1.jpg"></label>
+                    <label for="k4-img3"><img src="katalog 4/2.jpg"></label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- KATALOG 5 MODAL -->
+    <div id="katalog5" class="modal-overlay">
+        <input type="radio" name="k5-img" id="k5-img1" checked>
+        <input type="radio" name="k5-img" id="k5-img2">
+        <input type="radio" name="k5-img" id="k5-img3">
+        <a href="#katalog" class="modal-close"></a>
+        <div class="modal-content">
+            <a href="#katalog" class="close-btn">&times;</a>
+            <div class="modal-grid">
+                <div class="main-img-container">
+                    <img src="katalog 5/utama.jpg" class="img-display img1" alt="Model Biomechanical">
+                    <img src="katalog 5/1.jpg" class="img-display img2" alt="Angle 1">
+                    <img src="katalog 5/2.jpg" class="img-display img3" alt="Angle 2">
+                </div>
+                <div class="modal-details">
+                    <h2>Model Biomechanical</h2>
+                    <div class="modal-price">Rp 2.800.000</div>
+                    <p>Setiap karya seni di Tattobyhunt dirancang khusus dengan presisi tinggi, menggunakan tinta premium dan standar sterilisasi tertinggi. (Tersedia Home Service area Bandung & Jatinangor).</p>
+                    <a href="https://wa.me/628987889860?text=Halo%20Tattobyhunt,%20saya%20ingin%20pasang%20tatto%20Model%20Biomechanical" target="_blank" class="btn-gold" style="display:block; text-align:center;">Pesan via WhatsApp</a>
+                </div>
+            </div>
+            <div class="other-photos">
+                <h3>Detail & Angle Lainnya</h3>
+                <div class="other-photos-grid">
+                    <label for="k5-img1"><img src="katalog 5/utama.jpg"></label>
+                    <label for="k5-img2"><img src="katalog 5/1.jpg"></label>
+                    <label for="k5-img3"><img src="katalog 5/2.jpg"></label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- KATALOG 6 MODAL -->
+    <div id="katalog6" class="modal-overlay">
+        <input type="radio" name="k6-img" id="k6-img1" checked>
+        <input type="radio" name="k6-img" id="k6-img2">
+        <input type="radio" name="k6-img" id="k6-img3">
+        <a href="#katalog" class="modal-close"></a>
+        <div class="modal-content">
+            <a href="#katalog" class="close-btn">&times;</a>
+            <div class="modal-grid">
+                <div class="main-img-container">
+                    <img src="katalog 6/utama.jpg" class="img-display img1" alt="Model Blackwork Mandala">
+                    <img src="katalog 6/1.jpg" class="img-display img2" alt="Angle 1">
+                    <img src="katalog 6/2.jpg" class="img-display img3" alt="Angle 2">
+                </div>
+                <div class="modal-details">
+                    <h2>Model Blackwork Mandala</h2>
+                    <div class="modal-price">Rp 1.800.000</div>
+                    <p>Setiap karya seni di Tattobyhunt dirancang khusus dengan presisi tinggi, menggunakan tinta premium dan standar sterilisasi tertinggi. (Tersedia Home Service area Bandung & Jatinangor).</p>
+                    <a href="https://wa.me/628987889860?text=Halo%20Tattobyhunt,%20saya%20ingin%20pasang%20tatto%20Model%20Blackwork%20Mandala" target="_blank" class="btn-gold" style="display:block; text-align:center;">Pesan via WhatsApp</a>
+                </div>
+            </div>
+            <div class="other-photos">
+                <h3>Detail & Angle Lainnya</h3>
+                <div class="other-photos-grid">
+                    <label for="k6-img1"><img src="katalog 6/utama.jpg"></label>
+                    <label for="k6-img2"><img src="katalog 6/1.jpg"></label>
+                    <label for="k6-img3"><img src="katalog 6/2.jpg"></label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- KATALOG 7 MODAL -->
+    <div id="katalog7" class="modal-overlay">
+        <input type="radio" name="k7-img" id="k7-img1" checked>
+        <input type="radio" name="k7-img" id="k7-img2">
+        <input type="radio" name="k7-img" id="k7-img3">
+        <a href="#katalog" class="modal-close"></a>
+        <div class="modal-content">
+            <a href="#katalog" class="close-btn">&times;</a>
+            <div class="modal-grid">
+                <div class="main-img-container">
+                    <img src="katalog 7/utama.jpg" class="img-display img1" alt="Model Old School Swallow">
+                    <img src="katalog 7/1.jpg" class="img-display img2" alt="Angle 1">
+                    <img src="katalog 7/2.jpg" class="img-display img3" alt="Angle 2">
+                </div>
+                <div class="modal-details">
+                    <h2>Model Old School Swallow</h2>
+                    <div class="modal-price">Rp 1.200.000</div>
+                    <p>Setiap karya seni di Tattobyhunt dirancang khusus dengan presisi tinggi, menggunakan tinta premium dan standar sterilisasi tertinggi. (Tersedia Home Service area Bandung & Jatinangor).</p>
+                    <a href="https://wa.me/628987889860?text=Halo%20Tattobyhunt,%20saya%20ingin%20pasang%20tatto%20Model%20Old%20School%20Swallow" target="_blank" class="btn-gold" style="display:block; text-align:center;">Pesan via WhatsApp</a>
+                </div>
+            </div>
+            <div class="other-photos">
+                <h3>Detail & Angle Lainnya</h3>
+                <div class="other-photos-grid">
+                    <label for="k7-img1"><img src="katalog 7/utama.jpg"></label>
+                    <label for="k7-img2"><img src="katalog 7/1.jpg"></label>
+                    <label for="k7-img3"><img src="katalog 7/2.jpg"></label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- KATALOG 8 MODAL -->
+    <div id="katalog8" class="modal-overlay">
+        <input type="radio" name="k8-img" id="k8-img1" checked>
+        <input type="radio" name="k8-img" id="k8-img2">
+        <input type="radio" name="k8-img" id="k8-img3">
+        <a href="#katalog" class="modal-close"></a>
+        <div class="modal-content">
+            <a href="#katalog" class="close-btn">&times;</a>
+            <div class="modal-grid">
+                <div class="main-img-container">
+                    <img src="katalog 8/utama.jpg" class="img-display img1" alt="Model Script Lettering">
+                    <img src="katalog 8/1.jpg" class="img-display img2" alt="Angle 1">
+                    <img src="katalog 8/2.jpg" class="img-display img3" alt="Angle 2">
+                </div>
+                <div class="modal-details">
+                    <h2>Model Script Lettering</h2>
+                    <div class="modal-price">Rp 500.000</div>
+                    <p>Setiap karya seni di Tattobyhunt dirancang khusus dengan presisi tinggi, menggunakan tinta premium dan standar sterilisasi tertinggi. (Tersedia Home Service area Bandung & Jatinangor).</p>
+                    <a href="https://wa.me/628987889860?text=Halo%20Tattobyhunt,%20saya%20ingin%20pasang%20tatto%20Model%20Script%20Lettering" target="_blank" class="btn-gold" style="display:block; text-align:center;">Pesan via WhatsApp</a>
+                </div>
+            </div>
+            <div class="other-photos">
+                <h3>Detail & Angle Lainnya</h3>
+                <div class="other-photos-grid">
+                    <label for="k8-img1"><img src="katalog 8/utama.jpg"></label>
+                    <label for="k8-img2"><img src="katalog 8/1.jpg"></label>
+                    <label for="k8-img3"><img src="katalog 8/2.jpg"></label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- KATALOG 9 MODAL -->
+    <div id="katalog9" class="modal-overlay">
+        <input type="radio" name="k9-img" id="k9-img1" checked>
+        <input type="radio" name="k9-img" id="k9-img2">
+        <input type="radio" name="k9-img" id="k9-img3">
+        <a href="#katalog" class="modal-close"></a>
+        <div class="modal-content">
+            <a href="#katalog" class="close-btn">&times;</a>
+            <div class="modal-grid">
+                <div class="main-img-container">
+                    <img src="katalog 9/utama.jpg" class="img-display img1" alt="Model Neo-Traditional Tiger">
+                    <img src="katalog 9/1.jpg" class="img-display img2" alt="Angle 1">
+                    <img src="katalog 9/2.jpg" class="img-display img3" alt="Angle 2">
+                </div>
+                <div class="modal-details">
+                    <h2>Model Neo-Traditional Tiger</h2>
+                    <div class="modal-price">Rp 2.500.000</div>
+                    <p>Setiap karya seni di Tattobyhunt dirancang khusus dengan presisi tinggi, menggunakan tinta premium dan standar sterilisasi tertinggi. (Tersedia Home Service area Bandung & Jatinangor).</p>
+                    <a href="https://wa.me/628987889860?text=Halo%20Tattobyhunt,%20saya%20ingin%20pasang%20tatto%20Model%20Neo-Traditional%20Tiger" target="_blank" class="btn-gold" style="display:block; text-align:center;">Pesan via WhatsApp</a>
+                </div>
+            </div>
+            <div class="other-photos">
+                <h3>Detail & Angle Lainnya</h3>
+                <div class="other-photos-grid">
+                    <label for="k9-img1"><img src="katalog 9/utama.jpg"></label>
+                    <label for="k9-img2"><img src="katalog 9/1.jpg"></label>
+                    <label for="k9-img3"><img src="katalog 9/2.jpg"></label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- KATALOG 10 MODAL -->
+    <div id="katalog10" class="modal-overlay">
+        <input type="radio" name="k10-img" id="k10-img1" checked>
+        <input type="radio" name="k10-img" id="k10-img2">
+        <input type="radio" name="k10-img" id="k10-img3">
+        <a href="#katalog" class="modal-close"></a>
+        <div class="modal-content">
+            <a href="#katalog" class="close-btn">&times;</a>
+            <div class="modal-grid">
+                <div class="main-img-container">
+                    <img src="katalog 10/utama.jpg" class="img-display img1" alt="Model Fine Line Floral">
+                    <img src="katalog 10/1.jpg" class="img-display img2" alt="Angle 1">
+                    <img src="katalog 10/2.jpg" class="img-display img3" alt="Angle 2">
+                </div>
+                <div class="modal-details">
+                    <h2>Model Fine Line Floral</h2>
+                    <div class="modal-price">Rp 1.000.000</div>
+                    <p>Setiap karya seni di Tattobyhunt dirancang khusus dengan presisi tinggi, menggunakan tinta premium dan standar sterilisasi tertinggi. (Tersedia Home Service area Bandung & Jatinangor).</p>
+                    <a href="https://wa.me/628987889860?text=Halo%20Tattobyhunt,%20saya%20ingin%20pasang%20tatto%20Model%20Fine%20Line%20Floral" target="_blank" class="btn-gold" style="display:block; text-align:center;">Pesan via WhatsApp</a>
+                </div>
+            </div>
+            <div class="other-photos">
+                <h3>Detail & Angle Lainnya</h3>
+                <div class="other-photos-grid">
+                    <label for="k10-img1"><img src="katalog 10/utama.jpg"></label>
+                    <label for="k10-img2"><img src="katalog 10/1.jpg"></label>
+                    <label for="k10-img3"><img src="katalog 10/2.jpg"></label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- KATALOG 11 MODAL -->
+    <div id="katalog11" class="modal-overlay">
+        <input type="radio" name="k11-img" id="k11-img1" checked>
+        <input type="radio" name="k11-img" id="k11-img2">
+        <input type="radio" name="k11-img" id="k11-img3">
+        <a href="#katalog" class="modal-close"></a>
+        <div class="modal-content">
+            <a href="#katalog" class="close-btn">&times;</a>
+            <div class="modal-grid">
+                <div class="main-img-container">
+                    <img src="katalog 11/utama.jpg" class="img-display img1" alt="Model Chicano Style">
+                    <img src="katalog 11/1.jpg" class="img-display img2" alt="Angle 1">
+                    <img src="katalog 11/2.jpg" class="img-display img3" alt="Angle 2">
+                </div>
+                <div class="modal-details">
+                    <h2>Model Chicano Style</h2>
+                    <div class="modal-price">Rp 2.200.000</div>
+                    <p>Setiap karya seni di Tattobyhunt dirancang khusus dengan presisi tinggi, menggunakan tinta premium dan standar sterilisasi tertinggi. (Tersedia Home Service area Bandung & Jatinangor).</p>
+                    <a href="https://wa.me/628987889860?text=Halo%20Tattobyhunt,%20saya%20ingin%20pasang%20tatto%20Model%20Chicano%20Style" target="_blank" class="btn-gold" style="display:block; text-align:center;">Pesan via WhatsApp</a>
+                </div>
+            </div>
+            <div class="other-photos">
+                <h3>Detail & Angle Lainnya</h3>
+                <div class="other-photos-grid">
+                    <label for="k11-img1"><img src="katalog 11/utama.jpg"></label>
+                    <label for="k11-img2"><img src="katalog 11/1.jpg"></label>
+                    <label for="k11-img3"><img src="katalog 11/2.jpg"></label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- KATALOG 12 MODAL -->
+    <div id="katalog12" class="modal-overlay">
+        <input type="radio" name="k12-img" id="k12-img1" checked>
+        <input type="radio" name="k12-img" id="k12-img2">
+        <input type="radio" name="k12-img" id="k12-img3">
+        <a href="#katalog" class="modal-close"></a>
+        <div class="modal-content">
+            <a href="#katalog" class="close-btn">&times;</a>
+            <div class="modal-grid">
+                <div class="main-img-container">
+                    <img src="katalog 12/utama.jpg" class="img-display img1" alt="Model Surrealism Eye">
+                    <img src="katalog 12/1.jpg" class="img-display img2" alt="Angle 1">
+                    <img src="katalog 12/2.jpg" class="img-display img3" alt="Angle 2">
+                </div>
+                <div class="modal-details">
+                    <h2>Model Surrealism Eye</h2>
+                    <div class="modal-price">Rp 1.700.000</div>
+                    <p>Setiap karya seni di Tattobyhunt dirancang khusus dengan presisi tinggi, menggunakan tinta premium dan standar sterilisasi tertinggi. (Tersedia Home Service area Bandung & Jatinangor).</p>
+                    <a href="https://wa.me/628987889860?text=Halo%20Tattobyhunt,%20saya%20ingin%20pasang%20tatto%20Model%20Surrealism%20Eye" target="_blank" class="btn-gold" style="display:block; text-align:center;">Pesan via WhatsApp</a>
+                </div>
+            </div>
+            <div class="other-photos">
+                <h3>Detail & Angle Lainnya</h3>
+                <div class="other-photos-grid">
+                    <label for="k12-img1"><img src="katalog 12/utama.jpg"></label>
+                    <label for="k12-img2"><img src="katalog 12/1.jpg"></label>
+                    <label for="k12-img3"><img src="katalog 12/2.jpg"></label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- KATALOG 13 MODAL -->
+    <div id="katalog13" class="modal-overlay">
+        <input type="radio" name="k13-img" id="k13-img1" checked>
+        <input type="radio" name="k13-img" id="k13-img2">
+        <input type="radio" name="k13-img" id="k13-img3">
+        <a href="#katalog" class="modal-close"></a>
+        <div class="modal-content">
+            <a href="#katalog" class="close-btn">&times;</a>
+            <div class="modal-grid">
+                <div class="main-img-container">
+                    <img src="katalog 13/utama.jpg" class="img-display img1" alt="Model Tribal Polynesian">
+                    <img src="katalog 13/1.jpg" class="img-display img2" alt="Angle 1">
+                    <img src="katalog 13/2.jpg" class="img-display img3" alt="Angle 2">
+                </div>
+                <div class="modal-details">
+                    <h2>Model Tribal Polynesian</h2>
+                    <div class="modal-price">Rp 2.000.000</div>
+                    <p>Setiap karya seni di Tattobyhunt dirancang khusus dengan presisi tinggi, menggunakan tinta premium dan standar sterilisasi tertinggi. (Tersedia Home Service area Bandung & Jatinangor).</p>
+                    <a href="https://wa.me/628987889860?text=Halo%20Tattobyhunt,%20saya%20ingin%20pasang%20tatto%20Model%20Tribal%20Polynesian" target="_blank" class="btn-gold" style="display:block; text-align:center;">Pesan via WhatsApp</a>
+                </div>
+            </div>
+            <div class="other-photos">
+                <h3>Detail & Angle Lainnya</h3>
+                <div class="other-photos-grid">
+                    <label for="k13-img1"><img src="katalog 13/utama.jpg"></label>
+                    <label for="k13-img2"><img src="katalog 13/1.jpg"></label>
+                    <label for="k13-img3"><img src="katalog 13/2.jpg"></label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- KATALOG 14 MODAL -->
+    <div id="katalog14" class="modal-overlay">
+        <input type="radio" name="k14-img" id="k14-img1" checked>
+        <input type="radio" name="k14-img" id="k14-img2">
+        <input type="radio" name="k14-img" id="k14-img3">
+        <a href="#katalog" class="modal-close"></a>
+        <div class="modal-content">
+            <a href="#katalog" class="close-btn">&times;</a>
+            <div class="modal-grid">
+                <div class="main-img-container">
+                    <img src="katalog 14/utama.jpg" class="img-display img1" alt="Model Watercolor Splash">
+                    <img src="katalog 14/1.jpg" class="img-display img2" alt="Angle 1">
+                    <img src="katalog 14/2.jpg" class="img-display img3" alt="Angle 2">
+                </div>
+                <div class="modal-details">
+                    <h2>Model Watercolor Splash</h2>
+                    <div class="modal-price">Rp 1.900.000</div>
+                    <p>Setiap karya seni di Tattobyhunt dirancang khusus dengan presisi tinggi, menggunakan tinta premium dan standar sterilisasi tertinggi. (Tersedia Home Service area Bandung & Jatinangor).</p>
+                    <a href="https://wa.me/628987889860?text=Halo%20Tattobyhunt,%20saya%20ingin%20pasang%20tatto%20Model%20Watercolor%20Splash" target="_blank" class="btn-gold" style="display:block; text-align:center;">Pesan via WhatsApp</a>
+                </div>
+            </div>
+            <div class="other-photos">
+                <h3>Detail & Angle Lainnya</h3>
+                <div class="other-photos-grid">
+                    <label for="k14-img1"><img src="katalog 14/utama.jpg"></label>
+                    <label for="k14-img2"><img src="katalog 14/1.jpg"></label>
+                    <label for="k14-img3"><img src="katalog 14/2.jpg"></label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- KATALOG 15 MODAL -->
+    <div id="katalog15" class="modal-overlay">
+        <input type="radio" name="k15-img" id="k15-img1" checked>
+        <input type="radio" name="k15-img" id="k15-img2">
+        <input type="radio" name="k15-img" id="k15-img3">
+        <a href="#katalog" class="modal-close"></a>
+        <div class="modal-content">
+            <a href="#katalog" class="close-btn">&times;</a>
+            <div class="modal-grid">
+                <div class="main-img-container">
+                    <img src="katalog 15/utama.jpg" class="img-display img1" alt="Model Dark Gothic Cross">
+                    <img src="katalog 15/1.jpg" class="img-display img2" alt="Angle 1">
+                    <img src="katalog 15/2.jpg" class="img-display img3" alt="Angle 2">
+                </div>
+                <div class="modal-details">
+                    <h2>Model Dark Gothic Cross</h2>
+                    <div class="modal-price">Rp 1.300.000</div>
+                    <p>Setiap karya seni di Tattobyhunt dirancang khusus dengan presisi tinggi, menggunakan tinta premium dan standar sterilisasi tertinggi. (Tersedia Home Service area Bandung & Jatinangor).</p>
+                    <a href="https://wa.me/628987889860?text=Halo%20Tattobyhunt,%20saya%20ingin%20pasang%20tatto%20Model%20Dark%20Gothic%20Cross" target="_blank" class="btn-gold" style="display:block; text-align:center;">Pesan via WhatsApp</a>
+                </div>
+            </div>
+            <div class="other-photos">
+                <h3>Detail & Angle Lainnya</h3>
+                <div class="other-photos-grid">
+                    <label for="k15-img1"><img src="katalog 15/utama.jpg"></label>
+                    <label for="k15-img2"><img src="katalog 15/1.jpg"></label>
+                    <label for="k15-img3"><img src="katalog 15/2.jpg"></label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <p class="copyright">&copy; 2024 Tattobyhunt. All Rights Reserved.</p>
+    </footer>
+
+    <!-- FLOATING WHATSAPP BUTTON -->
+    <a href="https://wa.me/628987889860?text=Halo%20Tattobyhunt,%20saya%20tertarik%20untuk%20buat%20tattoo." class="wa-float" target="_blank" title="Chat Kami">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+    </a>
+
+</body>
+</html>
